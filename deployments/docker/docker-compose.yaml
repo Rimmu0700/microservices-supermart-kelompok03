@@ -1,0 +1,30 @@
+services:
+  order-db:
+    image: postgres:15-alpine
+    container_name: supermart-order-db
+    restart: always
+    environment:
+      POSTGRES_DB: order_service_db
+      POSTGRES_USER: order_admin
+      POSTGRES_PASSWORD: order_secret_pass
+    # Isolasi port mutlak untuk Order Service
+    ports:
+      - "5434:5432"
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
+      - ./init-scripts/order:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U order_admin -d order_service_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supermart-network
+
+networks:
+  supermart-network:
+    driver: bridge
+    name: supermart-isolated-net
+
+volumes:
+  order_db_data:
