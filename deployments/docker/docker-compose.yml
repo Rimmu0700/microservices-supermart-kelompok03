@@ -21,6 +21,27 @@ services:
     networks:
       - supermart-network
 
+  catalog-db:
+    image: mongo:6.0
+    container_name: supermart-catalog-db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: catalog_admin
+      MONGO_INITDB_ROOT_PASSWORD: catalog_secret_pass
+      MONGO_INITDB_DATABASE: catalog_service_db
+    ports:
+      - "27018:27017"
+    volumes:
+      - catalog_db_data:/data/db
+      - ./init-scripts/catalog/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supermart-network
+
 networks:
   supermart-network:
     driver: bridge
@@ -28,3 +49,4 @@ networks:
 
 volumes:
   order_db_data:
+  catalog_db_data:
