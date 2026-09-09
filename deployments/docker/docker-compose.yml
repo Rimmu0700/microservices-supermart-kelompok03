@@ -21,6 +21,27 @@ services:
     networks:
       - supermart-network
 
+  inventory-db:
+    image: postgres:15-alpine
+    container_name: supermart-inventory-db
+    restart: always
+    environment:
+      POSTGRES_DB: inventory_service_db
+      POSTGRES_USER: inventory_admin
+      POSTGRES_PASSWORD: inventory_secret_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - inventory_db_data:/var/lib/postgresql/data
+      - ./init-scripts/inventory:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U inventory_admin -d inventory_service_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supermart-network
+
 networks:
   supermart-network:
     driver: bridge
@@ -28,3 +49,4 @@ networks:
 
 volumes:
   order_db_data:
+  inventory_db_data:
