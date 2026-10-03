@@ -48,7 +48,11 @@ func main() {
 	})
 
 	// Global Middlewares
-	app.Use(logger.New())
+	// Logger dimatikan saat benchmark agar REST tidak dibebani log per request.
+	// Jalankan dengan BENCH_MODE=1 untuk mematikannya.
+	if os.Getenv("BENCH_MODE") != "1" {
+		app.Use(logger.New())
+	}
 	app.Use(recover.New())
 	app.Use(middleware.SetupCORS(cfg))
 
@@ -82,6 +86,14 @@ func main() {
 	// Domain Services (Monolith cross-domain coupling)
 	authSvc := auth.NewService(authRepo, cfg)
 	catalogSvc := catalog.NewService(catalogRepo)
+
+	// gRPC Catalog (East-West Traffic) berjalan paralel dengan REST
+	go func() {
+		if err := catalog.ServeGRPC(":50051", catalogSvc); err != nil {
+			log.Printf("gRPC server stopped: %v", err)
+		}
+	}()
+
 	inventorySvc := inventory.NewService(inventoryRepo)
 	orderSvc := order.NewService(orderRepo, catalogSvc, inventorySvc)
 	paymentSvc := payment.NewService(paymentRepo, orderSvc)

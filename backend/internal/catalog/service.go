@@ -18,6 +18,7 @@ type Service interface {
 	CreateBrand(req BrandRequest) (*Brand, error)
 	GetProductReviews(productID string) ([]ProductReview, error)
 	AddReview(userID, productID string, req CreateReviewRequest) error
+	GetProductSummaries(ids []string) ([]ProductSummary, error)
 }
 
 type catalogService struct {

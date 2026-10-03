@@ -15,6 +15,7 @@ func RegisterRoutes(router fiber.Router, handler *Handler, cfg *config.Config) {
 	catalogGroup.Get("/products/:id/reviews", handler.GetReviews)
 	catalogGroup.Get("/categories", handler.GetCategories)
 	catalogGroup.Get("/brands", handler.GetBrands)
+	catalogGroup.Get("/products/:id/summary", handler.GetProductSummary)
 
 	// Authenticated routes
 	authRequired := middleware.AuthRequired(cfg)
