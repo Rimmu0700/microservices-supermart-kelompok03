@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -16,6 +17,7 @@ import (
 	"github.com/nusantara-supermart/backend/internal/catalog"
 	"github.com/nusantara-supermart/backend/internal/inventory"
 	"github.com/nusantara-supermart/backend/internal/logistics"
+	"github.com/nusantara-supermart/backend/internal/messaging"
 	"github.com/nusantara-supermart/backend/internal/order"
 	"github.com/nusantara-supermart/backend/internal/payment"
 	"github.com/nusantara-supermart/backend/internal/procurement"
@@ -123,6 +125,14 @@ func main() {
 	logistics.RegisterRoutes(api, logisticsHandler, cfg)
 	procurement.RegisterRoutes(api, procurementHandler, cfg)
 	support.RegisterRoutes(api, supportHandler, cfg)
+
+	// Transactional Outbox relay (Tugas 3): menerbitkan event dari tabel outbox_events ke RabbitMQ
+	if db != nil {
+		relayCtx, relayCancel := context.WithCancel(context.Background())
+		defer relayCancel()
+		relay := &messaging.OutboxRelay{DB: db, URI: messaging.AMQPURI(), Interval: time.Second, BatchSize: 50}
+		go relay.Run(relayCtx)
+	}
 
 	// Graceful Shutdown Setup
 	serverShutdown := make(chan os.Signal, 1)
