@@ -501,3 +501,25 @@ Proyek ini dirancang untuk diselesaikan dalam 4 tahapan *milestone* praktikum ma
 
 ## 📄 Lisensi
 Lisensi Penggunaan Bahan Ajar Terbatas — PT Nusantara SuperMart Indonesia Course Materials. Dibuat untuk keperluan simulasi pendidikan rekayasa perangkat lunak dan arsitektur microservices.
+
+---
+
+## Setup Monorepo Tim (Praktikum 1) – Kelompok 03
+
+### Clone
+```bash
+git clone https://github.com/Rimmu0700/microservices-supermart-kelompok03.git
+cd microservices-supermart-kelompok03
+```
+
+### Database terisolasi
+
+| Domain | DBMS | Container | Port Host:Container | Database | User | Password | Volume |
+|---|---|---|---|---|---|---|---|
+| Order | PostgreSQL 15 | supermart-order-db | 5434:5432 | order_service_db | order_admin | order_secret_pass | order_db_data |
+
+### Menyalakan / mematikan
+```bash
+docker compose -f deployments/docker/docker-compose.yml up -d
+docker compose -f deployments/docker/docker-compose.yml down
+```
