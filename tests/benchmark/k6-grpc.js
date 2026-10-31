@@ -15,10 +15,13 @@ export const options = {
     summaryTrendStats: ['avg', 'min', 'med', 'p(90)', 'p(95)', 'p(99)', 'max'],
 };
 
+let connected = false;
+
 export default function () {
-    // satu koneksi per VU, dipakai ulang (HTTP/2 persisten)
-    if (__ITER === 0) {
-        client.connect(ADDR, { plaintext: true });
+    // satu koneksi per VU, dipakai ulang (HTTP/2 persisten); dicoba lagi bila gagal
+    if (!connected) {
+        client.connect(ADDR, { plaintext: true, timeout: '10s' });
+        connected = true;
     }
     const res = client.invoke('supermart.catalog.v1.CatalogService/GetProduct', { product_id: PRODUCT_ID });
     check(res, { 'status OK': (r) => r && r.status === grpc.StatusOK });
