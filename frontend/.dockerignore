@@ -1,0 +1,17 @@
+.git
+.gitignore
+
+node_modules
+dist
+.angular
+tmp
+
+.env
+.env.*
+*.pem
+*.key
+
+.vscode
+.idea
+Dockerfile*
+docker-compose*.yml

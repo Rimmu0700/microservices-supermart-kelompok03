@@ -1,0 +1,24 @@
+.git
+.gitignore
+
+# biner lokal
+/backend
+/supermart-bench
+*.exe
+bin
+tmp
+
+node_modules
+dist
+vendor
+
+.env
+.env.*
+*.pem
+*.key
+
+*.md
+.vscode
+.idea
+Dockerfile*
+docker-compose*.yml
