@@ -13,14 +13,34 @@ services:
     volumes:
       - ./db.sql:/docker-entrypoint-initdb.d/01-db.sql:ro
       - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      - ./deployments/sql/03-messaging.sql:/docker-entrypoint-initdb.d/03-messaging.sql:ro
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret" ]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 15s
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: nusantara-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: nusantara_mq
+      RABBITMQ_DEFAULT_PASS: nusantara_mq_secret
+      RABBITMQ_DEFAULT_VHOST: /supermart
+    ports:
+      - "5672:5672" # AMQP 0-9-1
+      - "15672:15672" # Management Dashboard
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
 
   backend:
     build:
@@ -41,6 +61,7 @@ services:
       JWT_SECRET: supermart-secret-key-for-nusantara-course-2026
       JWT_EXPIRY: 24h
       CORS_ORIGINS: "http://localhost:4200,http://127.0.0.1:4200,http://localhost:3000"
+      AMQP_URI: "amqp://nusantara_mq:nusantara_mq_secret@rabbitmq:5672/%2Fsupermart"
     depends_on:
       mysql:
         condition: service_healthy
@@ -58,3 +79,4 @@ services:
 
 volumes:
   mysql_data:
+  rabbitmq_data:

@@ -23,6 +23,7 @@ type Repository interface {
 	CreateProductReview(r *ProductReview) error
 	GetProductVariants(productID string) ([]ProductVariant, error)
 	GetProductImages(productID string) ([]ProductImage, error)
+	GetProductSummaries(ids []string) ([]ProductSummary, error)
 }
 
 type mysqlRepository struct {

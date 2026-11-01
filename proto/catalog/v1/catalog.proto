@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package supermart.catalog.v1;
+
+option go_package = "github.com/nusantara-supermart/backend/proto/catalog/v1;catalogv1";
+
+// Komunikasi privat Order -> Catalog (East-West Traffic)
+service CatalogService {
+  // Unary RPC: ambil satu ringkasan produk
+  rpc GetProduct (GetProductRequest) returns (GetProductResponse);
+
+  // Batch RPC: ambil banyak ringkasan produk sekaligus (mencegah chatty I/O)
+  rpc BatchGetProducts (BatchGetProductsRequest) returns (BatchGetProductsResponse);
+}
+
+// Nilai moneter: BUKAN float/double, melainkan integer sub-unit terkecil
+message Money {
+  string currency_code = 1; // contoh: "IDR"
+  int64 amount = 2;         // nilai nominal murni, contoh: 95000
+}
+
+// Hanya 4 field esensial hasil audit Bagian I
+message ProductSummary {
+  string product_id = 1;
+  string title = 2;
+  Money price = 3;
+  bool is_published = 4;
+
+  // Contoh aturan evolusi: field yang dihapus WAJIB di-reserve (lihat II.3)
+  // reserved 5;
+  // reserved "legacy_sku";
+}
+
+message GetProductRequest {
+  string product_id = 1;
+}
+
+message GetProductResponse {
+  ProductSummary product = 1;
+}
+
+message BatchGetProductsRequest {
+  repeated string product_ids = 1;
+}
+
+message BatchGetProductsResponse {
+  repeated ProductSummary products = 1;
+  repeated string not_found_ids = 2; // ID yang tidak ditemukan (bukan error total)
+}

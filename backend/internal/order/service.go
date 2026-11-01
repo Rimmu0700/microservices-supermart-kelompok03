@@ -1,13 +1,16 @@
 package order
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/nusantara-supermart/backend/internal/catalog"
 	"github.com/nusantara-supermart/backend/internal/inventory"
+	"github.com/nusantara-supermart/backend/internal/messaging"
 )
 
 type Service interface {
@@ -78,6 +81,21 @@ func (s *orderService) RemoveCartItem(itemID string) error {
 	return s.repo.RemoveCartItem(itemID)
 }
 
+// warehouseRegion mencari kota gudang untuk dipakai sebagai segmen wilayah pada routing key.
+func (s *orderService) warehouseRegion(warehouseID string) string {
+	list, err := s.inventorySvc.GetWarehouses()
+	if err == nil {
+		for _, w := range list {
+			if w.ID == warehouseID {
+				if slug := messaging.Slug(w.City); slug != "" {
+					return slug
+				}
+			}
+		}
+	}
+	return "unknown"
+}
+
 func (s *orderService) Checkout(customerID string, req CheckoutRequest) (*Order, error) {
 	cart, err := s.GetCart(customerID)
 	if err != nil || len(cart.Items) == 0 {
@@ -115,7 +133,7 @@ func (s *orderService) Checkout(customerID string, req CheckoutRequest) (*Order,
 	}
 
 	taxAmount := (grossTotal - discountAmount) * 0.11 // PPN 11%
-	shippingFee := 15000.00                          // Fixed estimate
+	shippingFee := 15000.00                           // Fixed estimate
 	totalNet := (grossTotal - discountAmount) + taxAmount + shippingFee
 
 	orderNumber := fmt.Sprintf("ORD-%s-%04d", time.Now().Format("20060102"), time.Now().Unix()%10000)
@@ -145,17 +163,44 @@ func (s *orderService) Checkout(customerID string, req CheckoutRequest) (*Order,
 		ShippingCost: shippingFee,
 	}
 
-	// Coupling check: reserve stock in Inventory domain
-	for _, item := range orderItems {
-		if err := s.inventorySvc.ReserveStock(item.ProductID, req.WarehouseID, orderID, item.Quantity); err != nil {
-			return nil, fmt.Errorf("failed to reserve stock for item %s: %w", item.ProductID, err)
-		}
+	// ===== PERUBAHAN TUGAS 3 =====
+	// SEBELUM: for tiap item -> inventorySvc.ReserveStock(...)  (sinkron, tight temporal coupling)
+	// SEKARANG: Order hanya menyimpan pesanan + event OrderPlaced dalam SATU transaksi (outbox).
+	//           Reservasi stok dilakukan Inventory secara asinkron lewat RabbitMQ.
+	region := s.warehouseRegion(req.WarehouseID)
+
+	eventItems := make([]messaging.OrderItemData, len(orderItems))
+	for i, it := range orderItems {
+		eventItems[i] = messaging.OrderItemData{ProductID: it.ProductID, Quantity: it.Quantity}
+	}
+	ev, err := messaging.NewEvent(messaging.EventOrderPlaced, "order-service", messaging.OrderPlacedData{
+		OrderID:        orderID,
+		OrderNumber:    orderNumber,
+		CustomerID:     customerID,
+		WarehouseID:    req.WarehouseID,
+		Region:         region,
+		TotalNetAmount: int64(math.Round(totalNet)),
+		Currency:       "IDR",
+		Items:          eventItems,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to build OrderPlaced event: %w", err)
+	}
+	payload, err := json.Marshal(ev)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode OrderPlaced event: %w", err)
+	}
+	outbox := &messaging.OutboxMessage{
+		ID:            ev.EventID,
+		AggregateType: "order",
+		AggregateID:   orderID,
+		EventType:     ev.EventType,
+		RoutingKey:    fmt.Sprintf("order.%s.placed", region), // <domain>.<wilayah>.<status>
+		Payload:       payload,
 	}
 
-	// Save order
-	if err := s.repo.CreateOrder(newOrder, orderItems, shipping); err != nil {
-		// Rollback reservations
-		_ = s.inventorySvc.ReleaseStock(orderID)
+	// Save order + outbox event (atomik)
+	if err := s.repo.CreateOrder(newOrder, orderItems, shipping, outbox); err != nil {
 		return nil, fmt.Errorf("failed to create order: %w", err)
 	}
 
