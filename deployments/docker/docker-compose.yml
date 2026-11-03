@@ -21,6 +21,30 @@ services:
     networks:
       - supermart-network
 
+  identity-db:
+    image: mysql:8.0
+    container_name: supermart-identity-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: identity_root_pass
+      MYSQL_DATABASE: identity_service_db
+      MYSQL_USER: identity_admin
+      MYSQL_PASSWORD: identity_secret_pass
+    # Isolasi port mutlak untuk Identity Service
+    # (3306 sudah dipakai MySQL monolith nusantara_db, jadi host port = 3307)
+    ports:
+      - "3307:3306"
+    volumes:
+      - identity_db_data:/var/lib/mysql
+      - ./init-scripts/identity:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "identity_admin", "-pidentity_secret_pass" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - supermart-network
+
 networks:
   supermart-network:
     driver: bridge
@@ -28,3 +52,4 @@ networks:
 
 volumes:
   order_db_data:
+  identity_db_data:
