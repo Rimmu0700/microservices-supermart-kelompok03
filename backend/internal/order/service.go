@@ -5,11 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/nusantara-supermart/backend/internal/catalog"
-	"github.com/nusantara-supermart/backend/internal/inventory"
 	"github.com/nusantara-supermart/backend/internal/messaging"
 )
 
@@ -27,17 +26,27 @@ type Service interface {
 	GetStatuses() ([]OrderStatus, error)
 }
 
-type orderService struct {
-	repo         Repository
-	catalogSvc   catalog.Service
-	inventorySvc inventory.Service
+// CatalogClient adalah kontrak Order -> Catalog (implementasi: gRPC, lihat catalog_client.go).
+type CatalogClient interface {
+	GetProduct(productID string) (*ProductInfo, error)
 }
 
-func NewService(repo Repository, catalogSvc catalog.Service, inventorySvc inventory.Service) Service {
+// StockClient adalah kontrak Order -> Inventory untuk melepas reservasi stok (implementasi: HTTP internal).
+type StockClient interface {
+	ReleaseStock(orderID string) error
+}
+
+type orderService struct {
+	repo    Repository
+	catalog CatalogClient
+	stock   StockClient
+}
+
+func NewService(repo Repository, catalog CatalogClient, stock StockClient) Service {
 	return &orderService{
-		repo:         repo,
-		catalogSvc:   catalogSvc,
-		inventorySvc: inventorySvc,
+		repo:    repo,
+		catalog: catalog,
+		stock:   stock,
 	}
 }
 
@@ -59,9 +68,15 @@ func (s *orderService) AddToCart(customerID string, req AddToCartRequest) error 
 		return errors.New("quantity must be greater than zero")
 	}
 
-	// Coupling check: verify product exists in Catalog domain
-	prod, _, _, err := s.catalogSvc.GetProductByID(req.ProductID)
-	if err != nil || prod == nil {
+	// Order -> Catalog lewat gRPC: pastikan produk ada
+	prod, err := s.catalog.GetProduct(req.ProductID)
+	if errors.Is(err, ErrProductNotFound) {
+		return errors.New("product does not exist")
+	}
+	if err != nil {
+		return fmt.Errorf("catalog service unavailable: %w", err)
+	}
+	if prod == nil {
 		return errors.New("product does not exist")
 	}
 
@@ -83,17 +98,26 @@ func (s *orderService) RemoveCartItem(itemID string) error {
 
 // warehouseRegion mencari kota gudang untuk dipakai sebagai segmen wilayah pada routing key.
 func (s *orderService) warehouseRegion(warehouseID string) string {
-	list, err := s.inventorySvc.GetWarehouses()
+	city, err := s.repo.GetWarehouseCity(warehouseID) // dari tabel replika warehouses
 	if err == nil {
-		for _, w := range list {
-			if w.ID == warehouseID {
-				if slug := messaging.Slug(w.City); slug != "" {
-					return slug
-				}
-			}
+		if slug := messaging.Slug(city); slug != "" {
+			return slug
 		}
 	}
 	return "unknown"
+}
+
+// newTrackingNumber membentuk nomor resi sesuai kurir (aturan yang dulu ada di repository).
+func newTrackingNumber(courierName string) string {
+	now := time.Now()
+	prefix := "GOSEND"
+	c := strings.ToLower(courierName)
+	if strings.Contains(c, "jne") {
+		prefix = "JNE"
+	} else if strings.Contains(c, "internal") || strings.Contains(c, "express") || strings.Contains(c, "nusantara") {
+		prefix = "EXP"
+	}
+	return fmt.Sprintf("%s-%s-%04d", prefix, now.Format("20060102"), now.Unix()%10000)
 }
 
 func (s *orderService) Checkout(customerID string, req CheckoutRequest) (*Order, error) {
@@ -157,10 +181,12 @@ func (s *orderService) Checkout(customerID string, req CheckoutRequest) (*Order,
 	if courierName == "" {
 		courierName = "GoSend Instant Fulfillment"
 	}
+	trackingNumber := newTrackingNumber(courierName)
 	shipping := &OrderShippingDetail{
-		OrderID:      orderID,
-		CourierName:  courierName,
-		ShippingCost: shippingFee,
+		OrderID:        orderID,
+		CourierName:    courierName,
+		TrackingNumber: &trackingNumber,
+		ShippingCost:   shippingFee,
 	}
 
 	// ===== PERUBAHAN TUGAS 3 =====
@@ -182,6 +208,9 @@ func (s *orderService) Checkout(customerID string, req CheckoutRequest) (*Order,
 		TotalNetAmount: int64(math.Round(totalNet)),
 		Currency:       "IDR",
 		Items:          eventItems,
+		TotalNetExact:  totalNet,
+		CourierName:    courierName,
+		TrackingNumber: trackingNumber,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to build OrderPlaced event: %w", err)
@@ -246,8 +275,8 @@ func (s *orderService) CancelOrder(orderID, reason, userID string) error {
 		return err
 	}
 
-	// Coupling: release reserved stock in Inventory domain
-	_ = s.inventorySvc.ReleaseStock(orderID)
+	// Order -> Inventory (HTTP internal): lepas stok yang direservasi. Best-effort seperti sebelumnya.
+	_ = s.stock.ReleaseStock(orderID)
 
 	return s.repo.CancelOrder(orderID, reason, userID, cancelledStatus.ID)
 }

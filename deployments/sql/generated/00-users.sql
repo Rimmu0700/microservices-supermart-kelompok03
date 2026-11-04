@@ -1,0 +1,22 @@
+-- DIHASILKAN oleh scripts/split_db.py. Satu user MySQL per service (isolasi akses).
+CREATE USER IF NOT EXISTS 'auth_user'@'%' IDENTIFIED BY 'auth_secret';
+GRANT ALL PRIVILEGES ON `auth_db`.* TO 'auth_user'@'%';
+CREATE USER IF NOT EXISTS 'catalog_user'@'%' IDENTIFIED BY 'catalog_secret';
+GRANT ALL PRIVILEGES ON `catalog_db`.* TO 'catalog_user'@'%';
+CREATE USER IF NOT EXISTS 'inventory_user'@'%' IDENTIFIED BY 'inventory_secret';
+GRANT ALL PRIVILEGES ON `inventory_db`.* TO 'inventory_user'@'%';
+CREATE USER IF NOT EXISTS 'order_user'@'%' IDENTIFIED BY 'order_secret';
+GRANT ALL PRIVILEGES ON `order_db`.* TO 'order_user'@'%';
+CREATE USER IF NOT EXISTS 'payment_user'@'%' IDENTIFIED BY 'payment_secret';
+GRANT ALL PRIVILEGES ON `payment_db`.* TO 'payment_user'@'%';
+CREATE USER IF NOT EXISTS 'promotion_user'@'%' IDENTIFIED BY 'promotion_secret';
+GRANT ALL PRIVILEGES ON `promotion_db`.* TO 'promotion_user'@'%';
+CREATE USER IF NOT EXISTS 'logistics_user'@'%' IDENTIFIED BY 'logistics_secret';
+GRANT ALL PRIVILEGES ON `logistics_db`.* TO 'logistics_user'@'%';
+CREATE USER IF NOT EXISTS 'procurement_user'@'%' IDENTIFIED BY 'procurement_secret';
+GRANT ALL PRIVILEGES ON `procurement_db`.* TO 'procurement_user'@'%';
+CREATE USER IF NOT EXISTS 'support_user'@'%' IDENTIFIED BY 'support_secret';
+GRANT ALL PRIVILEGES ON `support_db`.* TO 'support_user'@'%';
+CREATE USER IF NOT EXISTS 'notification_user'@'%' IDENTIFIED BY 'notification_secret';
+GRANT ALL PRIVILEGES ON `notification_db`.* TO 'notification_user'@'%';
+FLUSH PRIVILEGES;

@@ -16,6 +16,9 @@ var Queues = []QueueSpec{
 	{QueueInventoryReservation, []string{"order.*.placed"}},
 	{QueueOrderCompensation, []string{"inventory.*.reservation_failed"}},
 	{QueueNotification, []string{"order.#", "inventory.#"}},
+	{QueuePaymentInvoice, []string{"order.*.placed"}},
+	{QueueLogisticsShipment, []string{"order.*.placed"}},
+	{QueueInventoryGoodsIn, []string{"procurement.*.goods_received"}},
 }
 
 // DeclareTopology idempoten. Dipanggil oleh SEMUA proses (API dan worker) agar semua queue
