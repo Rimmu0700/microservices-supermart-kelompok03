@@ -21,9 +21,13 @@ const (
 	QueueInventoryReservation = "inventory.stock-reservation.q"
 	QueueOrderCompensation    = "order.reservation-failed.q"
 	QueueNotification         = "notification.order-events.q"
+	QueuePaymentInvoice       = "payment.invoice-creation.q"
+	QueueLogisticsShipment    = "logistics.shipment-creation.q"
+	QueueInventoryGoodsIn     = "inventory.goods-received.q"
 
 	EventOrderPlaced            = "OrderPlaced"
 	EventStockReservationFailed = "StockReservationFailed"
+	EventGoodsReceived          = "GoodsReceived"
 )
 
 // Event adalah amplop (envelope) baku untuk semua domain event.
@@ -50,12 +54,32 @@ type OrderPlacedData struct {
 	TotalNetAmount int64           `json:"total_net_amount"` // rupiah, integer
 	Currency       string          `json:"currency"`
 	Items          []OrderItemData `json:"items"`
+
+	// Tambahan agar service Payment dan Logistics bisa membuat faktur dan pengiriman
+	// tanpa menyentuh database Order.
+	TotalNetExact  float64 `json:"total_net_exact"` // nilai persis (bisa berkoma)
+	CourierName    string  `json:"courier_name"`
+	TrackingNumber string  `json:"tracking_number"`
 }
 
 type ReservationFailedData struct {
 	OrderID string `json:"order_id"`
 	Region  string `json:"region"`
 	Reason  string `json:"reason"`
+}
+
+// GoodsReceivedItem dan GoodsReceivedData: event dari Procurement saat barang masuk gudang (GRN).
+type GoodsReceivedItem struct {
+	ProductID string `json:"product_id"`
+	Quantity  int    `json:"quantity"`
+}
+
+type GoodsReceivedData struct {
+	GRNID           string              `json:"grn_id"`
+	GRNNumber       string              `json:"grn_number"`
+	PurchaseOrderID string              `json:"purchase_order_id"`
+	WarehouseID     string              `json:"warehouse_id"`
+	Items           []GoodsReceivedItem `json:"items"`
 }
 
 // NewEvent membungkus data menjadi Event dengan metadata enterprise.

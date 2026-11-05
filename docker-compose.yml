@@ -1,27 +1,51 @@
+# Nusantara SuperMart - 9 microservice + notification worker + gateway + frontend
+# Environment yang sama untuk semua service
+x-common-env: &common-env
+  MYSQL_HOST: mysql
+  MYSQL_PORT: "3306"
+  APP_PORT: "3000"
+  APP_ENV: production
+  JWT_SECRET: supermart-secret-key-for-nusantara-course-2026
+  JWT_EXPIRY: 24h
+  CORS_ORIGINS: "http://localhost:4200,http://127.0.0.1:4200,http://localhost:3000"
+  AMQP_URI: "amqp://nusantara_mq:nusantara_mq_secret@rabbitmq:5672/%2Fsupermart"
+  INTERNAL_TOKEN: supermart-internal-token-2026
+  REPLICA_INTERVAL_SECONDS: "3"
+  AUTH_URL: http://auth-service:3000
+  CATALOG_URL: http://catalog-service:3000
+  CATALOG_GRPC_ADDR: catalog-service:50051
+  INVENTORY_URL: http://inventory-service:3000
+  ORDER_URL: http://order-service:3000
+
+x-service-base: &service-base
+  restart: unless-stopped
+  depends_on:
+    mysql:
+      condition: service_healthy
+    rabbitmq:
+      condition: service_healthy
+
 services:
+  # ------------------------------------------------------------------ infrastruktur
   mysql:
     image: mysql:8.0
     container_name: nusantara-mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root_secret
-      MYSQL_DATABASE: nusantara_db
-      MYSQL_USER: nusantara_user
-      MYSQL_PASSWORD: nusantara_secret
     ports:
       - "3306:3306"
     volumes:
-      - ./db.sql:/docker-entrypoint-initdb.d/01-db.sql:ro
-      - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
-      - ./deployments/sql/03-messaging.sql:/docker-entrypoint-initdb.d/03-messaging.sql:ro
+      # 9 database terpisah + user per service (dihasilkan scripts/split_db.py)
+      - ./deployments/sql/generated:/docker-entrypoint-initdb.d:ro
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-proot_secret" ]
       interval: 5s
       timeout: 5s
-      retries: 10
-      start_period: 15s
+      retries: 20
+      start_period: 40s
 
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
@@ -32,8 +56,8 @@ services:
       RABBITMQ_DEFAULT_PASS: nusantara_mq_secret
       RABBITMQ_DEFAULT_VHOST: /supermart
     ports:
-      - "5672:5672" # AMQP 0-9-1
-      - "15672:15672" # Management Dashboard
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
@@ -42,29 +66,119 @@ services:
       timeout: 10s
       retries: 10
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: nusantara-backend
+  # ------------------------------------------------------------------ 9 microservice
+  auth-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: auth-service } }
+    container_name: auth-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: auth_user
+      MYSQL_PASSWORD: auth_secret
+
+  catalog-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: catalog-service } }
+    container_name: catalog-service
+    ports:
+      - "50051:50051" # gRPC Catalog (untuk grpcclient dan k6)
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: catalog_db
+      MYSQL_USER: catalog_user
+      MYSQL_PASSWORD: catalog_secret
+
+  inventory-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: inventory-service } }
+    container_name: inventory-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: inventory_user
+      MYSQL_PASSWORD: inventory_secret
+
+  order-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: order-service } }
+    container_name: order-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: order_db
+      MYSQL_USER: order_user
+      MYSQL_PASSWORD: order_secret
+
+  payment-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: payment-service } }
+    container_name: payment-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: payment_db
+      MYSQL_USER: payment_user
+      MYSQL_PASSWORD: payment_secret
+
+  promotion-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: promotion-service } }
+    container_name: promotion-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: promotion_db
+      MYSQL_USER: promotion_user
+      MYSQL_PASSWORD: promotion_secret
+
+  logistics-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: logistics-service } }
+    container_name: logistics-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: logistics_db
+      MYSQL_USER: logistics_user
+      MYSQL_PASSWORD: logistics_secret
+
+  procurement-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: procurement-service } }
+    container_name: procurement-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: procurement_db
+      MYSQL_USER: procurement_user
+      MYSQL_PASSWORD: procurement_secret
+
+  support-service:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: support-service } }
+    container_name: support-service
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: support_db
+      MYSQL_USER: support_user
+      MYSQL_PASSWORD: support_secret
+
+  # ------------------------------------------------------------------ worker notifikasi
+  notification-worker:
+    <<: *service-base
+    build: { context: ./backend, args: { SERVICE: notification-worker } }
+    container_name: notification-worker
+    environment:
+      <<: *common-env
+      MYSQL_DATABASE: notification_db
+      MYSQL_USER: notification_user
+      MYSQL_PASSWORD: notification_secret
+
+  # ------------------------------------------------------------------ gateway + frontend
+  gateway:
+    image: nginx:alpine
+    container_name: nusantara-gateway
     restart: unless-stopped
     ports:
-      - "3000:3000"
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: nusantara_db
-      MYSQL_USER: nusantara_user
-      MYSQL_PASSWORD: nusantara_secret
-      APP_PORT: 3000
-      APP_ENV: production
-      JWT_SECRET: supermart-secret-key-for-nusantara-course-2026
-      JWT_EXPIRY: 24h
-      CORS_ORIGINS: "http://localhost:4200,http://127.0.0.1:4200,http://localhost:3000"
-      AMQP_URI: "amqp://nusantara_mq:nusantara_mq_secret@rabbitmq:5672/%2Fsupermart"
-    depends_on:
-      mysql:
-        condition: service_healthy
+      - "3000:8080" # alamat lama backend (localhost:3000) kini dilayani gateway
+    volumes:
+      - ./deployments/gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
   frontend:
     build:
@@ -75,7 +189,7 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      - backend
+      - gateway
 
 volumes:
   mysql_data:
