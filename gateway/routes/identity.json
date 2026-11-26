@@ -1,0 +1,586 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/auth/login",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/login",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ],
+      "extra_config": {
+        "qos/ratelimit/router": {
+          "client_max_rate": 10,
+          "every": "1m",
+          "client_capacity": 10,
+          "strategy": "ip"
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/auth/register",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/register",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ],
+      "extra_config": {
+        "qos/ratelimit/router": {
+          "client_max_rate": 5,
+          "every": "1m",
+          "client_capacity": 5,
+          "strategy": "ip"
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/auth/me",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/me",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/me",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/me",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/addresses",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/addresses",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/addresses",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/addresses",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/addresses/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/addresses/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/kyc",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/kyc",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/kyc",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/kyc",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/users",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/users",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/users",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/users",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/users/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/users/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/users/{id}/status",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/users/{id}/status",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/users/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/users/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/roles",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/roles",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/permissions",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/permissions",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/kyc/{id}/verify",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/kyc/{id}/verify",
+          "encoding": "no-op",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/faq",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "category_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/faq",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/categories",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "category_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/categories",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "category_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "category_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets/{id}/messages",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets/{id}/messages",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets/{id}/rate",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets/{id}/rate",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/disputes",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "category_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/disputes",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/disputes",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/disputes",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets/{id}/status",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets/{id}/status",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/tickets/{id}/assign",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/tickets/{id}/assign",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/support/faq",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/support/faq",
+          "encoding": "no-op",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    }
+  ]
+}

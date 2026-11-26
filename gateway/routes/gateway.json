@@ -1,0 +1,84 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/health",
+      "method": "GET",
+      "output_encoding": "json",
+      "timeout": "2000ms",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "auth",
+          "encoding": "json",
+          "host": [
+            "http://auth-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "catalog",
+          "encoding": "json",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "inventory",
+          "encoding": "json",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "order",
+          "encoding": "json",
+          "host": [
+            "http://order-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "payment",
+          "encoding": "json",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "promotion",
+          "encoding": "json",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "logistics",
+          "encoding": "json",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "procurement",
+          "encoding": "json",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/health",
+          "group": "support",
+          "encoding": "json",
+          "host": [
+            "http://support-service:3000"
+          ]
+        }
+      ]
+    }
+  ]
+}
