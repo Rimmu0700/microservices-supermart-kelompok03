@@ -3,7 +3,7 @@
 # Jalankan setelah `docker compose up --build -d` dan tunggu sekitar 30 detik.
 set -uo pipefail
 
-BASE="${BASE:-http://localhost:3000/api/v1}"
+BASE="${BASE:-http://localhost:8000/api/v1}"
 EMAIL="${EMAIL:-wayan.putra@gmail.com}"
 PASSWORD="${PASSWORD:-password123}"
 PRODUCT_ID="${PRODUCT_ID:-p0000001-0000-0000-0000-000000000001}"
