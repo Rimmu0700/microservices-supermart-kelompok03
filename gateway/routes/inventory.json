@@ -1,0 +1,398 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/inventory/warehouses",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "warehouse_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/warehouses",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/warehouses/{id}/zones",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "warehouse_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/warehouses/{id}/zones",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/stocks",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "warehouse_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/stocks",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/stocks/{id}/adjust",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/stocks/{id}/adjust",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/mutations",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/mutations",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/mutations",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "warehouse_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/mutations",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/alerts",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "warehouse_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/alerts",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/opnames",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "warehouse_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/opnames",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/opnames",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/opnames",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/inventory/warehouses",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/inventory/warehouses",
+          "encoding": "no-op",
+          "host": [
+            "http://inventory-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/suppliers",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "po_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/suppliers",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/suppliers",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/suppliers",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/purchase-orders",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "po_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/purchase-orders",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/purchase-orders/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "po_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/purchase-orders/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/purchase-orders",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/purchase-orders",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/purchase-orders/{id}/approve",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/purchase-orders/{id}/approve",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/grn",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "po_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/grn",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/grn",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/grn",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/procurement/invoices",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "po_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/procurement/invoices",
+          "encoding": "no-op",
+          "host": [
+            "http://procurement-service:3000"
+          ]
+        }
+      ]
+    }
+  ]
+}
