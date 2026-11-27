@@ -1,0 +1,434 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/catalog/products",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products/{id}/reviews",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}/reviews",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/categories",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/categories",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/brands",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/brands",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products/{id}/summary",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}/summary",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products/{id}/reviews",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}/reviews",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/products/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/categories",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/categories",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/brands",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/brands",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions/vouchers",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions/vouchers",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions/flash-sales",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions/flash-sales",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions/vouchers/validate",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions/vouchers/validate",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions/loyalty",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions/loyalty",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions/loyalty/redeem",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions/loyalty/redeem",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/promotions/vouchers",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/promotions/vouchers",
+          "encoding": "no-op",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/storefront",
+      "method": "GET",
+      "output_encoding": "json",
+      "timeout": "2500ms",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products",
+          "group": "products",
+          "encoding": "json",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/catalog/categories",
+          "group": "categories",
+          "encoding": "json",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/promotions/flash-sales",
+          "group": "flash_sales",
+          "encoding": "json",
+          "host": [
+            "http://promotion-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/products/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/catalog/products/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://catalog-service:3000"
+          ]
+        }
+      ]
+    }
+  ]
+}
