@@ -1,0 +1,163 @@
+# =============================================================================================
+# docker-compose.member-2-catalog.yml  -  UJI MANDIRI domain Catalog (Anggota 2)
+# Hanya menjalankan: RabbitMQ + database dan service milik domain ini (catalog-service, promotion-service).
+# Service lain belum ada di branch ini, jadi tarikan replika/gRPC ke service lain akan gagal dan dicoba ulang
+# (itu normal pada uji mandiri). Yang diuji di sini: build, healthcheck, koneksi DB, koneksi RabbitMQ.
+# Sesuai isolasi Tugas 5: tidak ada port host untuk service maupun database.
+#
+#   docker compose -f docker-compose.member-2-catalog.yml up --build -d
+#   docker compose -f docker-compose.member-2-catalog.yml ps
+#   docker compose -f docker-compose.member-2-catalog.yml down -v
+# =============================================================================================
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: nusantara-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: nusantara_mq
+      RABBITMQ_DEFAULT_PASS: nusantara_mq_secret
+      RABBITMQ_DEFAULT_VHOST: /supermart
+    ports:
+    - 127.0.0.1:15672:15672
+    volumes:
+    - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test:
+      - CMD
+      - rabbitmq-diagnostics
+      - -q
+      - ping
+      interval: 10s
+      timeout: 10s
+      retries: 10
+  catalog-db:
+    image: mysql:8.0
+    container_name: nusantara-catalog-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: catalog_db
+      MYSQL_USER: catalog_user
+      MYSQL_PASSWORD: catalog_secret
+    command:
+    - --default-authentication-plugin=mysql_native_password
+    - --innodb-buffer-pool-size=64M
+    - --performance-schema=OFF
+    - --max-connections=60
+    volumes:
+    - ./services/catalog-service/db/schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+    - catalog_db_data:/var/lib/mysql
+    healthcheck:
+      test:
+      - CMD
+      - mysqladmin
+      - ping
+      - -h
+      - 127.0.0.1
+      - -u
+      - root
+      - -proot_secret
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+  promotion-db:
+    image: mysql:8.0
+    container_name: nusantara-promotion-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: promotion_db
+      MYSQL_USER: promotion_user
+      MYSQL_PASSWORD: promotion_secret
+    command:
+    - --default-authentication-plugin=mysql_native_password
+    - --innodb-buffer-pool-size=64M
+    - --performance-schema=OFF
+    - --max-connections=60
+    volumes:
+    - ./services/promotion-service/db/schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+    - promotion_db_data:/var/lib/mysql
+    healthcheck:
+      test:
+      - CMD
+      - mysqladmin
+      - ping
+      - -h
+      - 127.0.0.1
+      - -u
+      - root
+      - -proot_secret
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+  catalog-service:
+    restart: unless-stopped
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: ./services/catalog-service
+    container_name: catalog-service
+    environment:
+      MYSQL_HOST: catalog-db
+      MYSQL_PORT: '3306'
+      APP_PORT: '3000'
+      APP_ENV: production
+      JWT_SECRET: supermart-secret-key-for-nusantara-course-2026
+      JWT_EXPIRY: 24h
+      CORS_ORIGINS: http://localhost:4200,http://127.0.0.1:4200,http://localhost:3000
+      AMQP_URI: amqp://nusantara_mq:nusantara_mq_secret@rabbitmq:5672/%2Fsupermart
+      INTERNAL_TOKEN: supermart-internal-token-2026
+      REPLICA_INTERVAL_SECONDS: '3'
+      AUTH_URL: http://auth-service:3000
+      CATALOG_URL: http://catalog-service:3000
+      CATALOG_GRPC_ADDR: catalog-service:50051
+      INVENTORY_URL: http://inventory-service:3000
+      ORDER_URL: http://order-service:3000
+      MYSQL_DATABASE: catalog_db
+      MYSQL_USER: catalog_user
+      MYSQL_PASSWORD: catalog_secret
+    expose:
+    - '3000'
+    - '50051'
+  promotion-service:
+    restart: unless-stopped
+    depends_on:
+      promotion-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: ./services/promotion-service
+    container_name: promotion-service
+    environment:
+      MYSQL_HOST: promotion-db
+      MYSQL_PORT: '3306'
+      APP_PORT: '3000'
+      APP_ENV: production
+      JWT_SECRET: supermart-secret-key-for-nusantara-course-2026
+      JWT_EXPIRY: 24h
+      CORS_ORIGINS: http://localhost:4200,http://127.0.0.1:4200,http://localhost:3000
+      AMQP_URI: amqp://nusantara_mq:nusantara_mq_secret@rabbitmq:5672/%2Fsupermart
+      INTERNAL_TOKEN: supermart-internal-token-2026
+      REPLICA_INTERVAL_SECONDS: '3'
+      AUTH_URL: http://auth-service:3000
+      CATALOG_URL: http://catalog-service:3000
+      CATALOG_GRPC_ADDR: catalog-service:50051
+      INVENTORY_URL: http://inventory-service:3000
+      ORDER_URL: http://order-service:3000
+      MYSQL_DATABASE: promotion_db
+      MYSQL_USER: promotion_user
+      MYSQL_PASSWORD: promotion_secret
+    expose:
+    - '3000'
+volumes:
+  rabbitmq_data:
+  catalog_db_data:
+  promotion_db_data:
