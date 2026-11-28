@@ -1,0 +1,5 @@
+TABEL KOMPARASI KINERJA GATEWAY (2026-11-28 10:16:20, host rim-Thin-GF63-12UCX, N=20)
+Skenario | Metode | Jumlah request | Latensi rata-rata (ms)
+1. Overhead rute tunggal | Langsung ke service vs via gateway | 1 request | 8.31 ms vs 10.21 ms (overhead 1.9 ms)
+2. Efisiensi agregasi    | 3 request berurutan vs 1 endpoint agregasi | 3 req vs 1 req | 30.26 ms vs 24.66 ms (hemat 18.5%)
+3. Beban berlebih        | Permintaan di atas ambang rate limit | burst 30 | 429: 3.26 ms vs diterima: 244.46 ms

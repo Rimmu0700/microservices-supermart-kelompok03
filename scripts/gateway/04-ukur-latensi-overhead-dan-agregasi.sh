@@ -23,20 +23,20 @@ ORDER_ID="${ORDER_ID:-}"
 JSON='Content-Type: application/json'
 BACKENDS="auth-service catalog-service inventory-service order-service payment-service promotion-service logistics-service procurement-service support-service"
 FAILED=0
-if [ -t 1 ]; then R=$'\033[31m'; G=$'\033[32m'; Y=$'\033[33m'; B=$'\033[36m'; BD=$'\033[1m'; N=$'\033[0m'; else R=""; G=""; Y=""; B=""; BD=""; N=""; fi
-title(){ echo; echo "${BD}${B}================================================================${N}"; echo "${BD}${B} $*${N}"; echo "${BD}${B}================================================================${N}"; }
-step(){ echo; echo "${BD}>> $*${N}"; }
+if [ -t 1 ]; then R=$'\033[31m'; G=$'\033[32m'; Y=$'\033[33m'; B=$'\033[36m'; BD=$'\033[1m'; NC=$'\033[0m'; else R=""; G=""; Y=""; B=""; BD=""; NC=""; fi
+title(){ echo; echo "${BD}${B}================================================================${NC}"; echo "${BD}${B} $*${NC}"; echo "${BD}${B}================================================================${NC}"; }
+step(){ echo; echo "${BD}>> $*${NC}"; }
 info(){ echo "   $*"; }
-ok(){ echo "  ${G}[PASS]${N} $*"; }
-bad(){ echo "  ${R}[FAIL]${N} $*"; FAILED=1; }
-warn(){ echo "  ${Y}[PERHATIAN]${N} $*"; }
+ok(){ echo "  ${G}[PASS]${NC} $*"; }
+bad(){ echo "  ${R}[FAIL]${NC} $*"; FAILED=1; }
+warn(){ echo "  ${Y}[PERHATIAN]${NC} $*"; }
 PY="$(command -v python3 || command -v python || true)"
 [ -n "$PY" ] || { echo "[ERROR] python3 diperlukan"; exit 1; }
 command -v curl >/dev/null 2>&1 || { echo "[ERROR] curl diperlukan"; exit 1; }
 command -v docker >/dev/null 2>&1 || { echo "[ERROR] docker diperlukan"; exit 1; }
 # compose file yang sedang dipakai stack ini (terdeteksi dari label container)
 if [ -z "${COMPOSE_FILE:-}" ]; then
-  cf="$(docker inspect -f '{{index .Config.Labels "com.docker.compose.project.config_files"}}' api-gateway 2>/dev/null)"
+  cf="$(docker inspect -f '{{index .Config.Labels "com.docker.compose.project.config_files"}}' nusantara-api-gateway 2>/dev/null)"
   cf="${cf%%,*}"; cf="${cf##*[\\/]}"
   if [ -n "$cf" ] && [ -f "$cf" ]; then export COMPOSE_FILE="$cf"; fi
 fi
@@ -93,8 +93,8 @@ require_gateway(){
 }
 finish(){
   echo
-  if [ "$FAILED" = "0" ]; then echo "${G}${BD}SELESAI: SEMUA PEMERIKSAAN LULUS${N}  (screenshot layar ini; baris Host ikut terlihat)"
-  else echo "${R}${BD}SELESAI: ADA PEMERIKSAAN GAGAL${N}  (lihat [FAIL]; bantuan: docker compose logs api-gateway)"; exit 1; fi
+  if [ "$FAILED" = "0" ]; then echo "${G}${BD}SELESAI: SEMUA PEMERIKSAAN LULUS${NC}  (screenshot layar ini; baris Host ikut terlihat)"
+  else echo "${R}${BD}SELESAI: ADA PEMERIKSAAN GAGAL${NC}  (lihat [FAIL]; bantuan: docker compose logs api-gateway)"; exit 1; fi
 }
 echo "Host: $(hostname)   Waktu: $(date '+%Y-%m-%d %H:%M:%S')   Gateway: $GW"
 N="${N:-20}"; WARM=3
@@ -102,7 +102,7 @@ STAMP="$(date +%Y%m%d-%H%M%S)"; mkdir -p hasil-demo; OUTF="hasil-demo/tugas5-lat
 title "TUGAS 5 - UKUR 4: LATENSI OVERHEAD GATEWAY DAN EFISIENSI AGREGASI (rata-rata $N percobaan)"
 require_gateway
 need_order && ok "id order: $ORDER_ID" || { bad "tidak ada order (jalankan scripts/smoke-test.sh)"; exit 1; }
-NET="$(docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' api-gateway 2>/dev/null)"
+NET="$(docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' nusantara-api-gateway 2>/dev/null)"
 [ -n "$NET" ] && ok "jaringan Docker: $NET (pengukuran dari dalam jaringan agar adil: tanpa NAT host)" || { bad "jaringan Docker tidak ditemukan"; exit 1; }
 IMG="${CURL_IMAGE:-curlimages/curl:latest}"
 docker pull -q "$IMG" >/dev/null 2>&1 || warn "gagal menarik $IMG (butuh internet); memakai image lokal bila ada"
