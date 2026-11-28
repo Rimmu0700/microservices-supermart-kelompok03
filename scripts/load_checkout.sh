@@ -3,7 +3,7 @@
 # Jeda SLEEP detik diperlukan karena nomor order/invoice di kode dibuat dari time.Now().Unix()%10000 (UNIQUE).
 set -euo pipefail
 
-BASE="${BASE:-http://localhost:3000/api/v1}"
+BASE="${BASE:-http://localhost:8000/api/v1}"
 COUNT="${COUNT:-50}"
 SLEEP="${SLEEP:-1.1}"
 EMAIL="${EMAIL:-wayan.putra@gmail.com}"

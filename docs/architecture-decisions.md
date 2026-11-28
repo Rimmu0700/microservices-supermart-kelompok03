@@ -7,7 +7,7 @@ Format tiap keputusan: Konteks, Keputusan, Alasan, Konsekuensi (termasuk kelemah
 - **Konteks:** seed project berupa modular monolith dengan satu database dan JOIN lintas domain.
 - **Keputusan:** memecah menjadi auth, catalog, inventory, order, payment, promotion, logistics, procurement, support, dan
   notification-worker. Tiap service memiliki kode, modul Go, Dockerfile, skema (`db/schema.sql`), dan container database sendiri
-  (`docker-compose.microservices.yml`). Tidak ada foreign key atau JOIN lintas database; hubungan antar data hanya berupa ID.
+  (`docker-compose.yml`). Tidak ada foreign key atau JOIN lintas database; hubungan antar data hanya berupa ID.
 - **Alasan:** loose coupling, deploy dan perubahan skema mandiri, isolasi kegagalan, hak akses minimal (user DB per service),
   dan kebebasan memilih teknologi data per service.
 - **Konsekuensi:** data lintas domain harus diambil lewat gRPC, event, atau replika (ADR-002 sampai 005); konsistensi menjadi

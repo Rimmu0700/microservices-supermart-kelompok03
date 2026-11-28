@@ -1,0 +1,752 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/orders/cart",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "status_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/cart",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/cart",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/cart",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/cart/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/cart/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/cart/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/cart/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/checkout",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/checkout",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ],
+      "extra_config": {
+        "qos/ratelimit/router": {
+          "client_max_rate": 10,
+          "every": "1m",
+          "client_capacity": 10,
+          "strategy": "ip"
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/orders/statuses",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "status_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/statuses",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "status_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "status_id"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/{id}/cancel",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/{id}/cancel",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/{id}/notes",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/{id}/notes",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/orders/{id}/status",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/{id}/status",
+          "encoding": "no-op",
+          "host": [
+            "http://order-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/methods",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/methods",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/invoices",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/invoices",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/invoices/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/invoices/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/invoices/order/{order_id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/invoices/order/{order_id}",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/pay",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/pay",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/credits",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/credits",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/credits/topup",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/credits/topup",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/refunds",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/refunds",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/refunds",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/refunds",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/payments/refunds/{id}/approve",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/refunds/{id}/approve",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/couriers",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/couriers",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/services",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/services",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/rates",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/rates",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/shipments/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/shipments/{id}",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/order/{order_id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/order/{order_id}",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/shipments",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/shipments",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/shipments",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/shipments",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/shipments/{id}/status",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/shipments/{id}/status",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/shipments/{id}/pod",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/shipments/{id}/pod",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/runs",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/runs",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/drivers",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/drivers",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/logistics/vehicles",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Content-Type",
+        "Accept"
+      ],
+      "input_query_strings": [
+        "driver_id",
+        "status"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/logistics/vehicles",
+          "encoding": "no-op",
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/order-summary/{order_id}",
+      "method": "GET",
+      "output_encoding": "json",
+      "timeout": "2500ms",
+      "input_headers": [
+        "Authorization"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/orders/{order_id}",
+          "group": "order_info",
+          "encoding": "json",
+          "target": "data",
+          "deny": [
+            "histories",
+            "notes",
+            "shipping"
+          ],
+          "host": [
+            "http://order-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/payments/invoices/order/{order_id}",
+          "group": "invoice_info",
+          "encoding": "json",
+          "target": "data",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        },
+        {
+          "url_pattern": "/api/v1/logistics/order/{order_id}",
+          "group": "delivery_info",
+          "encoding": "json",
+          "target": "data",
+          "deny": [
+            "tracking_logs",
+            "proof"
+          ],
+          "host": [
+            "http://logistics-service:3000"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/invoices/{order_id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": [
+        "Authorization",
+        "Accept"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/payments/invoices/order/{order_id}",
+          "encoding": "no-op",
+          "host": [
+            "http://payment-service:3000"
+          ]
+        }
+      ]
+    }
+  ]
+}

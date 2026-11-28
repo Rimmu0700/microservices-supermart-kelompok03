@@ -41,7 +41,7 @@
 docker build -t promotion-service .                       # build image milik service ini saja
 go build ./cmd/promotion-service                          # atau build lokal
 ```
-Menjalankan seluruh sistem: dari root repositori `docker compose -f docker-compose.microservices.yml up --build -d`.
+Menjalankan seluruh sistem: dari root repositori `docker compose -f docker-compose.yml up --build -d`.
 
 ## Mengganti teknologi database (kebebasan service ini)
 Semua yang perlu diubah ada **di dalam folder ini saja**: `pkg/database/` (driver dan DSN), `internal/promotion/`

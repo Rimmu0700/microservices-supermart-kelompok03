@@ -14,7 +14,7 @@ Dokumen kerja, bukan laporan. Isinya fakta dari implementasi kelompok untuk memu
 | Isolasi | layanan dan database hanya `expose`; port host hanya gateway `:8000`, frontend `:4200`, dan konsol RabbitMQ `127.0.0.1:15672` |
 | Frontend | `frontend/nginx.conf` meneruskan `/api/` ke `api-gateway:8080` (menggantikan nginx `gateway` lama) |
 
-Menjalankan: `docker compose -f docker-compose.microservices.yml up --build -d`, lalu `bash scripts/gateway/01-...` sampai `04-...`.
+Menjalankan: `docker compose -f docker-compose.yml up --build -d`, lalu `bash scripts/gateway/01-...` sampai `04-...`.
 Mengubah rute: edit `gateway/routes/<domain>.json`, jalankan `python3 gateway/build_krakend.py`, lalu `docker compose restart api-gateway`.
 Validasi memakai KrakenD sendiri: `docker run --rm -v "$PWD/gateway/krakend.json:/etc/krakend/krakend.json:ro" devopsfaith/krakend:2.6.3 check -c /etc/krakend/krakend.json`.
 

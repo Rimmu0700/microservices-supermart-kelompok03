@@ -1,9 +1,0 @@
-# Override SEMENTARA untuk klien/benchmark gRPC dari komputer host (isolasi Tugas 5 menutup port 50051).
-# Hanya terikat ke localhost. Pakai bersama compose utama:
-#   docker compose -f docker-compose.microservices.yml -f docker-compose.grpc-debug.yml up -d catalog-service
-# Setelah selesai kembalikan ke mode isolasi:
-#   docker compose -f docker-compose.microservices.yml up -d catalog-service
-services:
-  catalog-service:
-    ports:
-      - "127.0.0.1:50051:50051"
